@@ -1,0 +1,90 @@
+bot:
+  name: "PokeBot Pro Unified"
+  enabled: true
+  debug_mode: true
+  # Intervalo do loop principal (em segundos)
+  loop_interval: 1.0
+
+screen:
+  capture_method: "mss"
+  fps: 10
+
+input:
+  mouse_move_duration: 0.25  # segundos para o movimento suave do mouse
+
+# Caminhos (Ajuste se necessário)
+assets:
+  templates_dir: "assets/templates/"
+  shiny_image: "shiny.png"
+  goto_image: "goto.png"
+  talk_image: "talk.png"
+  fight_image: "fight.png"   # template do botão FIGHT
+  bag_image: "items.png"       # template do botão BAG
+  pokemon_image: "pokemon.png" # template do botão POKÉMON
+  run_image: "run.png"       # template do botão RUN
+
+# Detecção: thresholds para template matching
+detection:
+  talk_threshold: 0.6
+  shiny_threshold: 0.6
+  goto_threshold: 0.7
+  battle_button_threshold: 0.75
+  # Única área de combate onde os botões FIGHT/ITEMS/POKEMON/RUN aparecem
+  # Formato: [x1, y1, x2, y2]
+  battle_area: [685, 933, 1226, 1074]
+  # Área de busca ativa para o template talk.png (definida a partir do ROI selecionado)
+  # Formato usado abaixo: [x1, y1, x2, y2]
+  talk_search_area: [596, 292, 1263, 514]
+
+ocr:
+  # Ajuste para o seu caminho real
+  tesseract_path: "C:/Program Files/Tesseract-OCR/tesseract.exe"
+  use_easyocr: false # Tesseract com filtro de cor é mais rápido para jogos
+
+battle:
+  auto_battle: true
+  # Tempo mínimo entre ações de ataque; menor valor deixa o bot mais reativo
+  action_cooldown: 3.0
+
+strategy:
+  # Pokémons que o bot deve tentar capturar (se implementado) ou dar prioridade
+  whitelist:
+    - "chansey"
+    - "blissey"
+  # Pokémons dos quais o bot deve fugir imediatamente
+  blacklist:
+    - "magikarp"
+    - "caterpie"
+
+# COORDENADAS EXATAS (Importadas do seu mapeamento)
+rois:
+  # HUD de Batalha
+  enemy_name: [27, 7, 95, 25]      # [x, y, w, h] ou [x1, y1, x2, y2]
+  enemy_level: [245, 5, 277, 24]
+  enemy_hp_bar: [57, 33, 272, 58]   # Para detecção de cor verde
+  
+  player_name: [1639, 1013, 1752, 1032]
+  player_hp_text: [1740, 1048, 1822, 1062] # Para OCR dos números
+  
+  # Botões de Ação (coordenadas ajustadas do arquivo Tobia/settings.yaml -> action_buttons)
+  btn_fight: [871, 917, 1030, 970]
+  btn_bag: [871, 984, 1030, 1039]
+  btn_pokemon: [697, 983, 858, 1038]
+  btn_run: [1044, 986, 1205, 1038]
+
+  # Slots de Ataque (Texto) (coordenadas ajustadas do arquivo Tobia/settings.yaml -> battle_moves)
+  moves:
+    slot_1: [749, 869, 945, 889]
+    slot_2: [971, 868, 1166, 890]
+    slot_3: [749, 948, 928, 971]
+    slot_4: [996, 945, 1167, 973]
+
+  # Lista de Pokémon no menu de troca (popup "Select Pokémon")
+  switch_menu:
+    container: [1636, 1015, 1893, 1034]
+    slot_height: 30
+
+  # HUD de Equipe fixa na exploração (barra lateral inferior direita)
+  team_hud:
+    container: [1798, 793, 1913, 1077]
+    slot_height: 47
